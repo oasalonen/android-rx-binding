@@ -1,21 +1,17 @@
 package com.example.osal.rxbindings;
 
-import android.databinding.ObservableField;
-
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 
 /**
  * Created by osal on 26.4.2016.
  */
 public class RxViewModel {
-    public final BindableObservable<String> runningTime = new BindableObservable<>();
+    public final RxProperty<String> runningTime = new RxProperty<>();
 
     public RxViewModel() {
         Observable.interval(1, TimeUnit.SECONDS)

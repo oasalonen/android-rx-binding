@@ -3,7 +3,6 @@ package com.example.osal.rxbindings;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.databinding.Observable;
-import android.databinding.ObservableInt;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
@@ -17,27 +16,21 @@ import rx.subjects.PublishSubject;
 /**
  * Created by osal on 26.4.2016.
  */
-public class BindableObservable<T> implements rx.Observer<T>, Observable {
+public class RxProperty<T> implements rx.Observer<T>, Observable {
 
-    // or behavior subject?
     private final PublishSubject<T> subject = PublishSubject.create();
     private final rx.Observable<T> output;
     private final List<OnPropertyChangedCallback> callbacks = new ArrayList<>();
     private T value;
 
-    public BindableObservable() {
+    public RxProperty() {
         output = subject;
         connectCallbacks();
     }
 
-    public BindableObservable(final T startValue) {
+    public RxProperty(final T startValue) {
         output = subject.startWith(startValue);
         connectCallbacks();
-    }
-
-    @BindingAdapter("android:text")
-    public static <T> void setText(TextView view, BindableObservable<T> bo) {
-        view.setText(bo != null && bo.getValue() != null ? bo.getValue().toString() : "");
     }
 
     @Bindable
@@ -96,5 +89,12 @@ public class BindableObservable<T> implements rx.Observer<T>, Observable {
                 }
             }
         });
+    }
+
+    @BindingAdapter("android:text")
+    public static <T> void setText(TextView view, RxProperty<T> bo) {
+        view.setText(bo != null && bo.getValue() != null ?
+                bo.getValue().toString() :
+                "");
     }
 }
